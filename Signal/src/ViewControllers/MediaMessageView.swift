@@ -30,6 +30,9 @@ class MediaMessageView: UIView, OWSAudioAttachmentPlayerDelegate {
     var audioProgressSeconds: CGFloat = 0
     var audioDurationSeconds: CGFloat = 0
 
+    var contentView: UIView?
+    var contentAspectRatio: CGFloat?
+
     // MARK: Initializers
 
     @available(*, unavailable, message:"use attachment: constructor instead.")
@@ -159,6 +162,10 @@ class MediaMessageView: UIView, OWSAudioAttachmentPlayerDelegate {
         animatedImageView.contentMode = .scaleAspectFit
         self.addSubview(animatedImageView)
         animatedImageView.autoPinToSuperviewEdges()
+        contentView = animatedImageView
+        if image.size.width > 0 && image.size.height > 0 {
+            contentAspectRatio = image.size.width > 0 / image.size.height
+        }
     }
 
     private func createImagePreview() {
@@ -177,6 +184,10 @@ class MediaMessageView: UIView, OWSAudioAttachmentPlayerDelegate {
         imageView.contentMode = .scaleAspectFit
         self.addSubview(imageView)
         imageView.autoPinToSuperviewEdges()
+        contentView = imageView
+        if image.size.width > 0 && image.size.height > 0 {
+            contentAspectRatio = image.size.width > 0 / image.size.height
+        }
     }
 
     private func createVideoPreview() {
@@ -196,6 +207,10 @@ class MediaMessageView: UIView, OWSAudioAttachmentPlayerDelegate {
         self.addSubview(videoPlayer.view)
         self.videoPlayer = videoPlayer
         videoPlayer.view.autoPinToSuperviewEdges()
+        contentView = videoPlayer.view
+//        if image.size.width > 0 && image.size.height > 0 {
+//            contentAspectRatio = image.size.width > 0 / image.size.height
+//        }
     }
 
     private func createGenericPreview() {
